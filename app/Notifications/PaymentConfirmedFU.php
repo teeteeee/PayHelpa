@@ -41,8 +41,9 @@ class PaymentConfirmedFU extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Your dollar rate has been successfully saved and is now fixed. Please be aware that you can change your rate at any moment by clicking the "update your rate" button.                    .')
-                    ->action('Go to home page', url('https://payhelpa.com'))
+                    ->line('We are pleased to inform you that your Helpa has carried out your transaction successfully. Please proceed to confirm.')
+                    ->line('If you do not confirm the transaction within the next 60 minutes, the PayHelpa team will automatically transfer funds to Helpas account based on their discretion and investigations.')
+                     ->action('Go to home page', url('https://payhelpa.com'))
                     ->line('Thank you for using our application!');
                     
     }

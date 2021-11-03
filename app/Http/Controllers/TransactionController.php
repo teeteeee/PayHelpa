@@ -21,10 +21,20 @@ use Illuminate\Support\Facades\Session;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Http;
 use DateTime;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\PaymentConfirmed;
 use App\Notifications\PhoneVerified;
 use App\Notifications\AccountVerifying;
-use Illuminate\Support\Facades\Notification;
+
+use App\Notifications\Transactionconfirmation;
+use App\Notifications\PaymentConfirmedFU;
+use App\Notifications\PaymentSuccessful;
+use App\Notifications\PaymentSuccessfulFU;
+use App\Notifications\RateAcceptanceFU;
+use App\Notifications\RateAcceptanceLU;
+use App\Notifications\TransactionCompletedFU;
+use App\Notifications\TransactionCompletedLU;
+use App\Notifications\WalletFundingLU;
 
 class TransactionController extends Controller
 {
@@ -86,11 +96,27 @@ class TransactionController extends Controller
         $data = [
             'status' => 1,
         ];
+         $transaction = Transaction::where('transaction_id', $request->transaction_id)->first();
+         
+         
+         
+         
+         $user = User::where('user_id', $request->user_id)->first();
+         $transaction->lu_id = $request->user_id;
+
 
         $updated = Transaction::where('transaction_id', $request->transaction_id)->update($data);
+       $senderEmail = User::where('user_id',  auth()->user()->user_id)->select('email')->first();
+        $FUsenderEmail = User::where('user_id', '=', $request->user_id)->get('email')->first();
+        
+        
+        //email oonly to be sent to LU 
+        //its FU thats logged in
 
         if($updated > 0)
         {
+           //$senderEmail->notify(new Transactionconfirmation());
+          // $FUsenderEmail->notify(new Transactionconfirmation());
             return back()->with('success', 'Transaction status updated successfully');
         }
         else
@@ -102,9 +128,11 @@ class TransactionController extends Controller
 
       public function updatefutransactionstatus2(Request $request)
     {
+        //end of transaction and mail would be sent to both
         $validator = Validator::make($request->all(), [
             'transaction_id' => 'required',
         ]);
+        $user = User::where('user_id', auth()->user()->user_id)->first();
 
         if ($validator->fails()) 
         {
@@ -119,6 +147,8 @@ class TransactionController extends Controller
 
         if($updated > 0)
         {
+            $user->notify(new TransactionCompletedLU());
+          // $FUsenderEmail->notify(new TransactionCompletedFU());
             return back()->with('success', 'Transaction status has been updated successfully');
         }
         else
@@ -187,12 +217,6 @@ class TransactionController extends Controller
         $transaction->payment_type = $request->payment_type;
         $inserted = $transaction->save();
 
-        $senderEmail = User::where('user_id', $user_id)->select('email')->first();
-        $FUsenderEmail = User::where('user_id', '=', $fu_offer->user_id)->get('email');
-        
-        $senderEmail->notify(new PaymentConfirmed());
-        $FUsenderEmail->notify(new PaymentConfirmed());
-
 
         return response()->json(['transaction_id' => $transaction_id]);
     }
@@ -219,9 +243,13 @@ class TransactionController extends Controller
             'payment_type' => 'Bank transfer',
             
         ]);
+       
+        
 
         if(!empty($transaction))
         {
+           
+
             return response()->json(['transaction_succeed' => true, 'transaction_id' => $transaction->transaction_id]);
         }
         else
@@ -291,6 +319,7 @@ class TransactionController extends Controller
 
         //We check if user has a pending offer first
         $offer_exists = Transaction::where('lu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
+        $user = User::where('user_id', auth()->user()->user_id)->first();
 
         if($offer_exists == null)
         {
@@ -306,10 +335,16 @@ class TransactionController extends Controller
                 $transaction->website_link = $request->website_link;
                 $transaction->description = $request->description;
                 $inserted = $transaction->save();
+                $transaction->fu_id = $request->user_id;
+
+                $FUuser = User::where('user_id', $request->user_id)->first();
+
 
                 if($inserted > 0)
                 {
                      // Send Email here to LU //
+                     $user->notify(new RateAcceptanceLU());
+                     $FUuser->notify(new RateAcceptanceFU());
 
 
                      //Notification::send(new PaymentConfirmed()); 
@@ -339,6 +374,7 @@ class TransactionController extends Controller
                     $wfr->transaction_id = $transaction_id;
                     $wfr->account_number = $request->account_number;
                     $inserted2 = $wfr->save();
+                     
                     return response()->json(['inserted' => true, 'transaction_id' => $transaction_id]);
                 }
                 
@@ -374,17 +410,15 @@ class TransactionController extends Controller
                 
             ];
 
-
             $updated = Transaction::where('transaction_id', $request->transaction_id)->update($data);
-
-           
-
 
             if($updated > 0)
             {
                // Notification::send(new PaymentConfirmed()); 
 
                 //Create a fresh Transaction for the Foreign User
+                $senderEmail = User::where('user_id', auth()->user()->user_id)->first();
+                
 
                 $transaction = Transaction::where('transaction_id', $request->transaction_id)->first();
 
@@ -400,15 +434,21 @@ class TransactionController extends Controller
                         'amount' => $amount_new
                             
                     ]);
-
                     $datax = [
                         'max_amount' => $amount_new,
                     ];
-
+                    $FUsenderEmail = User::where('user_id', '=', $transaction->fu_id)->first(); 
                     $updated = User::where('user_id', $transaction->fu_id)->update($datax);
+                   
+       
                 }
 
-                //Notification::send(new PaymentConfirmed());
+                
+                $senderEmail->notify(new PaymentSuccessful()); 
+               // $FUsenderEmail->notify(new PaymentSuccessfulFU());
+                
+                
+
                
                 return response()->json(['transaction_succeed' => true, 'transaction_id' => $request->transaction_id]);
             }

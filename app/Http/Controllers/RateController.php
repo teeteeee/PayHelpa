@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Http;
+use App\Notifications\FuRateUpdated;
+use App\Notifications\LuRateUpdated;
+use Illuminate\Support\Facades\Notification;
 use DateTime;
 
 class RateController extends Controller
@@ -29,7 +32,7 @@ class RateController extends Controller
        
         //We check if user has a pending offer first
         $offer_exists = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
-
+        $user =  User::where('user_id', auth()->user()->user_id)->first();
         if($offer_exists == null)
         {
             $check_virtual_account_record = true;
@@ -52,6 +55,7 @@ class RateController extends Controller
                 ];
     
                 $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
+                $user->notify(new FuRateUpdated());
 
                 return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
             }
@@ -81,7 +85,7 @@ class RateController extends Controller
             ];
 
             $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
-
+            $user->notify(new FuRateUpdated());
 
             return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
 
