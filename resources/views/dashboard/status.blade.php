@@ -95,7 +95,7 @@
     
                                                 </td>
                                                 <td>₦ {{ number_format($transaction->rate) }}</td>
-                                                <td>${{ number_format($transaction->amount) }}</td>
+                                                <td>${{ number_format($transaction->max_amount) }}</td>
                                                 <td><a href="{{ url('/dashboard/transaction/'.$transaction->transaction_id.'/details') }}" class="btn btn-primary" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px;">See Details</a></td>
                                               </tr>
 
@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="amount">Helpa’s ID</label>
+                <label for="max_amount">Helpa’s ID</label>
                 <input type="text" class="form-control" placeholder="Enter Helpa's ID">
             </div>
         </div>

@@ -27,9 +27,9 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
 
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
+    // public function __construct() {
+    //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    // }
 
     public function register(Request $request)
     {
@@ -159,7 +159,7 @@ class UserController extends Controller
 
     }
 
-    public function loadprofle()
+    public function loadprofile()
     {
        
         $output = "";

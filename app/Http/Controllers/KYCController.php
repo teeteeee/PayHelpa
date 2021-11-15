@@ -72,7 +72,7 @@ class KYCController extends Controller
 
                 $request->session()->put('phone', $receiverNumber);
 
-                return redirect('/dashboard/kyc/3')->with('phone', $receiverNumber);
+                return redirect('/dashboard/kyc/3')->with('phone', $request->phone);
     
             } 
             catch (Exception $e) 
@@ -158,119 +158,6 @@ class KYCController extends Controller
 
             
     }
-
-    // public function verifyphoneold(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'phone' => 'required',
-    //     ]);
-
-    //     if ($validator->fails()) 
-    //     {
-    //         return redirect('/dashboard/kyc/2/local')->with('error', 'Your session timed out! Try again');
-    //     }
-
-    //     $otp_value = rand(100000,999999);
-
-    //     $user_id = auth()->user()->user_id;
-
-    //     $otp = new OTPPhone();
-    //     $otp->user_id = $user_id;
-    //     $otp->otp = $otp_value;
-    //     $otp->phone = $request->phone;
-    //     $inserted = $otp->save();
-
-
-    //     if($inserted)
-    //     {
-    //         try
-    //         {
-    //             //Set as local user
-    //             $data = [
-    //                 'is_foreign_user' => '0'
-    //             ];
-
-    //             $updated = User::where('user_id', auth()->user()->user_id)->update($data);
-
-    //             $phone = $request->phone;
-
-    //             $filtered_phone_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
-    //                 // // Remove "-" from number
-    //             $phone_to_check = str_replace("-", "", $filtered_phone_number);
-    //                 // // Check the lenght of number
-    //                 // // This can be customized if you want phone number from a specific country
-    //             if (strlen($phone_to_check) < 10 || strlen($phone_to_check) > 14) 
-    //             {
-    //                 echo "Wrong phone number";
-    //             } 
-    //             else 
-    //             {
-
-    //                 $phone_to_check2 = trim($phone_to_check, "0"); 
-
-    //                 $response = array();
-    //                 $headers = array('Content-Type: application/x-www-form-urlencoded');
-    //                 $url = 'https://www.bulksmsnigeria.com/api/v1/sms/create';
-    //                 $arr_params = [
-    //                     'from'  	=>  'Me',
-    //                     'to'  		=>  '234'.$phone_to_check2,
-    //                     'body'  	=>  'This is your PayHelpa phone verification token'. ' ' . $otp_value,
-                
-    //                     'append_sender' => 2, // Choose your Append Sender ID Option:
-    //                     //1 for none,
-    //                     // 2 for Hosted SIM Only
-    //                     // and 3 for all
-                
-    //                     'api_token' =>  'pdfRlfA9LG54o5mi1nunjDubLE6UarvLKysrjXFZ9rD4WdX7YArEbfi9bqyO', //Todo: Replace with your API Token
-                
-    //                     'dnd'       =>  4 //Choose your preferred DND Management Option:
-    //                     // 1 for Get a refund,
-    //                     // 2 for Direct hosted SIM,
-    //                     // 3 for Hosted SIM Only,
-    //                     // 4 for Dual-Backup and
-    //                     // 5 for Dual-Dispatch
-    //                 ];
-    //                 if (is_array($arr_params)) {
-    //                     $final_url_data = http_build_query($arr_params, '', '&');
-    //                 }
-    //                 $ch = curl_init();
-    //                 curl_setopt($ch, CURLOPT_URL, $url);
-    //                 curl_setopt($ch, CURLOPT_POSTFIELDS, $final_url_data);
-    //                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    //                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    //                 curl_setopt($ch, CURLOPT_POST, 1);
-    //                 curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
-    //                 curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    //                 curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    //                 $response['body'] = curl_exec($ch);
-    //                 $response['code'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    //                 curl_close($ch);
-
-    //                 if($response['code'] == 200)
-    //                 {
-    //                     //Session::put('phone', $phone);
-    //                     $request->session()->put('phone', $phone);
-    //                     return redirect('/dashboard/kyc/3');
-    //                 }
-    //                 else
-    //                 {
-    //                     return redirect('/dashboard/kyc/2')->with('error', 'Error occured! Try again');
-    //                 }
-    //             }
-
-    //         }
-    //         catch(\Exception $e)
-    //         {
-    //             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
-    //         }
-            
-    //     }
-    //     else
-    //     {
-    //         return response()->json(['sent' => 0]);
-    //     }
-    // }
 
     public function verifyphoneotp(Request $request)
     {

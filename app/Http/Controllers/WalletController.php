@@ -44,7 +44,8 @@ class WalletController extends Controller
             return response()->json(['requestSuccessful' => true, 'sessionId' => $request->sessionId, 'responseMessage' => 'duplicate transaction', 'responseCode' => '01']);
         }
 
-        $account_number_exists = WalletFundingRequest::where('account_number', $request->accountNumber)->first(); 
+        //$account_number_exists = WalletFundingRequest::where('account_number', $request->accountNumber)->first(); 
+        $account_number_exists = User::where('reserved_account_number', $request->accountNumber)->first(); 
         //return response()->json($request->all());
         //return response()->json($account_number_exists);
         if($account_number_exists == null)
@@ -63,7 +64,6 @@ class WalletController extends Controller
             //Update wallet here
             $data = [
                 'wallet' => $new_balance,
-
             ];
 
             $updated = User::where('user_id', $account_number_exists->user_id)->update($data);

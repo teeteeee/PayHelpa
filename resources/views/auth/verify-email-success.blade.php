@@ -28,7 +28,7 @@
 <body>
 
 
-<div style="margin-top: 1rem;" class="pr-3">
+{{-- <div style="margin-top: 1rem;" class="pr-3">
     <form method="POST" action="{{ route('logout') }}">
         @csrf
 
@@ -36,7 +36,7 @@
             {{ __('Log Out') }}
         </button>
     </form>
-</div>
+</div> --}}
 
 <div class="container">
     
@@ -69,21 +69,19 @@
         @endif
           
           {{-- <a href="" class="btn btn-outline-primary">EMAIL ACCOUNT</a> --}}
-          <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
-
+          
             <div>
                 {{-- <p class="my-0"><label for="">Didn't get link?</label></p>
                 <button class="btn btn-outline-primary">
                     {{ __('Resend Verification Email') }}
                 </button> --}}
                 <a href="{{ url('/dashboard')}}">
-                  <button class="btn py-2" style="border:1px solid #3E7BFA">
+                  <button class="btn py-2 px-4" style="border:1px solid #3E7BFA">
                     <span style="font-style: normal; font-size: 10px; font-weight: 800; text-align: center; color: #3E7BFA">GO TO DASHBOARD</span> 
                   </button>
                 </a>
             </div>
-        </form>
+  
 
       </div>
     

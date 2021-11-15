@@ -41,10 +41,10 @@ class TransactionCompletedLU extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The transaction went through successfully. You can now transfer funds from your virtual account to your local bank account.')
-                    ->line('Please email info@payhelpa.com if you are having trouble transferring funds from your virtual account.')
-                    ->action('Go to home page', url('https://payhelpa.com'))
-                    ->line('Thank you for using our application!');
+                    ->line('Transaction Completed!')
+                    ->line('Your transaction has now been successfully completed. Kindly ensure to rate and review your Helpa.')
+                    ->action('Go to home page', url('https://payhelpa.com'));
+                    
     }
 
     /**

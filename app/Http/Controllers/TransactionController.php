@@ -21,11 +21,10 @@ use Illuminate\Support\Facades\Session;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Http;
 use DateTime;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\PaymentConfirmed;
 use App\Notifications\PhoneVerified;
 use App\Notifications\AccountVerifying;
-
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\Transactionconfirmation;
 use App\Notifications\PaymentConfirmedFU;
 use App\Notifications\PaymentSuccessful;
@@ -96,27 +95,11 @@ class TransactionController extends Controller
         $data = [
             'status' => 1,
         ];
-         $transaction = Transaction::where('transaction_id', $request->transaction_id)->first();
-         
-         
-         
-         
-         $user = User::where('user_id', $request->user_id)->first();
-         $transaction->lu_id = $request->user_id;
-
 
         $updated = Transaction::where('transaction_id', $request->transaction_id)->update($data);
-       $senderEmail = User::where('user_id',  auth()->user()->user_id)->select('email')->first();
-        $FUsenderEmail = User::where('user_id', '=', $request->user_id)->get('email')->first();
-        
-        
-        //email oonly to be sent to LU 
-        //its FU thats logged in
 
         if($updated > 0)
         {
-           //$senderEmail->notify(new Transactionconfirmation());
-          // $FUsenderEmail->notify(new Transactionconfirmation());
             return back()->with('success', 'Transaction status updated successfully');
         }
         else
@@ -129,10 +112,12 @@ class TransactionController extends Controller
       public function updatefutransactionstatus2(Request $request)
     {
         //end of transaction and mail would be sent to both
+        
         $validator = Validator::make($request->all(), [
             'transaction_id' => 'required',
         ]);
-        $user = User::where('user_id', auth()->user()->user_id)->first();
+         $user = User::where('user_id', auth()->user()->user_id)->first();
+
 
         if ($validator->fails()) 
         {
@@ -142,13 +127,30 @@ class TransactionController extends Controller
         $data = [
             'status' => 2,
         ];
+    //     $fuemail = DB::table('transactions')
+    //         ->join('users', 'transactions.fu_id', '=', 'users.user_id')
+    //         ->select('email')
+    //         ->where('transaction_id', $request->transaction_id)
+    //         ->get();
+            
+    //      while(
+    //     $transaction = DB::table('transactions')
+    //          ->select('fu_id')
+    //          ->where('transaction_id', $request->transaction_id)
+    //          ->get()
+    //      $transaction = DB::table('users')
+    //          ->select('user_id')
+    //          ->where('transaction_id', '=', 'users.user_id')
+    //          ->get('email');    
+    // }
+        //$transaction = DB::transaction->where('transaction_id', $request->transaction_id)->select
 
         $updated = Transaction::where('transaction_id', $request->transaction_id)->update($data);
 
         if($updated > 0)
-        {
+        { //$fuemail->notify(new TransactionCompletedFU());
             $user->notify(new TransactionCompletedLU());
-          // $FUsenderEmail->notify(new TransactionCompletedFU());
+           
             return back()->with('success', 'Transaction status has been updated successfully');
         }
         else
@@ -198,186 +200,81 @@ class TransactionController extends Controller
        
     }
 
-    public function transactioncreatelu(Request $request)
-    {
-        $offer_id = $request->offer_id;
-
-        $fu_offer = FUOffer::where('offer_id', $offer_id)->first();
-
-        $transaction_id = 'TX'.time();
-        $transaction = new Transaction();
-        $transaction->transaction_id = $transaction_id;
-        $transaction->offer_id = $offer_id;
-        $transaction->fu_id = $fu_offer->user_id;
-        $transaction->lu_id = auth()->user()->user_id;
-        $transaction->rate = $fu_offer->rate;
-        $transaction->amount = $request->amount;
-        $transaction->fu_rating = $fu_offer->rating;
-        $transaction->lu_rating = auth()->user()->rating;
-        $transaction->payment_type = $request->payment_type;
-        $inserted = $transaction->save();
 
 
-        return response()->json(['transaction_id' => $transaction_id]);
-    }
-
-    public function cardpaylu(Request $request)
-    {
-       
-        //Check a record here that the LU who connected has actually transfered funds to his virtual account. if confirmed, create transaction
-        //For let just create the transaction in the database 
-
-        $fu_offer = FUOffer::where('offer_id', $request->offer_id)->first();
-
-        $transaction_id = 'TX'.time();
-        $transaction = Transaction::create([
-            'transaction_id' => $transaction_id,
-            'offer_id' => $request->offer_id,
-            'fu_id' => $fu_offer->user_id,
-            'lu_id' => auth()->user()->user_id,
-            'rate' => $fu_offer->rate,
-            'amount' => $request->amount,
-            'subject' => $request->subject,
-            'website_link' => $request->website,
-            'description' => $request->description,
-            'payment_type' => 'Bank transfer',
-            
-        ]);
-       
-        
-
-        if(!empty($transaction))
-        {
-           
-
-            return response()->json(['transaction_succeed' => true, 'transaction_id' => $transaction->transaction_id]);
-        }
-        else
-        {
-            return response()->json(['transaction_succeed' => false]);
-        }
-    }
-
-
-    public function cardpayluinputrate(Request $request)
-    {
-        
-        // At this point here, we need to check if the LU payment was successful or not.
-        //Pending when a system for payment will be available, we will just query the LUOffer for a matching record
-
-        //We check if user has a pending offer first
-        $offer_exists = Transaction::where('lu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
-
-        if($offer_exists == null)
-        {
-            $check_virtual_account_record = true;
-
-            if( $check_virtual_account_record)
-            {
-            
-                $transaction_id = 'TX'.time();
-                $transaction = new Transaction();
-                $transaction->transaction_id = $transaction_id;
-                $transaction->lu_id = auth()->user()->user_id;
-                $transaction->rate = $request->rate;
-                $transaction->amount = $request->amount;
-                $transaction->payment_type = $request->payment_type;
-                $inserted = $transaction->save();
-            }
-            else
-            {
-                return response()->json(['check_virtual_account_record' => false]);
-            }
-
-            return response()->json(['check_virtual_account_record' => true]);
-        }
-        else
-        {
-            return response()->json(['pending_offer_exists' => true]);
-        }
-        
-    }
+    
 
     public function banktransferlurate(Request $request)
     {
 
-        // $validator = Validator::make($request->all(), [
-        //     'transaction_how_to_doc' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            //'transaction_how_to_doc' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            "rate" => 'required',
+            "amount" => 'required',
+            "subject"  => 'required',
+            "description" => 'required',
+            "account_number" => 'required'
+        ]);
 
-
-        // if($validator->fails())
-        // {
-        //     return response()->json(['errors' => $validator->messages()], 400);
-        // }
-
-        //Check a record here that the LU who connected has actually transfered funds to his virtual account. 
-        //If the record exists that means that the Lu has made a valid offer, then we can create his offer
-
-        // $check_virtual_account_record = true;
-
+        if($validator->fails())
+        {
+            return response()->json(['errors' => $validator->messages()], 400);
+        }
 
         //We check if user has a pending offer first
         $offer_exists = Transaction::where('lu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
-        $user = User::where('user_id', auth()->user()->user_id)->first();
 
         if($offer_exists == null)
         {
-            
-                $transaction_id = 'TX'.time();
-                $transaction = new Transaction();
-                $transaction->transaction_id = $transaction_id;
-                $transaction->lu_id = auth()->user()->user_id;
-                $transaction->rate = $request->rate;
-                $transaction->amount = $request->amount;
-                $transaction->payment_type = 'bank transfer';
-                $transaction->subject = $request->subject;
-                $transaction->website_link = $request->website_link;
-                $transaction->description = $request->description;
-                $inserted = $transaction->save();
-                $transaction->fu_id = $request->user_id;
+        
+            $transaction_id = 'TX'.time();
+            $transaction = new Transaction();
+            $transaction->transaction_id = $transaction_id;
+            $transaction->lu_id = auth()->user()->user_id;
+            $transaction->rate = $request->rate;
+            $transaction->min_amount = $request->amount;
+            $transaction->max_amount = $request->amount;
+            $transaction->payment_type = 'bank transfer';
+            $transaction->subject = $request->subject;
+            $transaction->website_link = $request->website_link;
+            $transaction->description = $request->description;
+            $inserted = $transaction->save();
 
-                $FUuser = User::where('user_id', $request->user_id)->first();
+            if($inserted > 0)
+            {
+                    // Send Email here to LU //
 
 
-                if($inserted > 0)
+                    //Notification::send(new PaymentConfirmed()); 
+
+
+                    // Send Email here to LU //
+
+                if ($request->hasFile('transaction_how_to_doc')) 
                 {
-                     // Send Email here to LU //
-                     $user->notify(new RateAcceptanceLU());
-                     $FUuser->notify(new RateAcceptanceFU());
+                     $file = $request->file('transaction_how_to_doc');
+                        
+                     $docFileName = time().uniqid().'.'.$request->transaction_how_to_doc->extension();
+
+                     $file->storeAs('uploads/transaction_how_to_docs', $docFileName, 's3');
+
+                     $datadoc = [
+                         'transaction_how_to_doc' =>  $docFileName . '.png',
+                     ];
 
 
-                     //Notification::send(new PaymentConfirmed()); 
+                    $updated = Transaction::where('transaction_id', $transaction_id)->update($datadoc);
+                    //$user->notify(new PaymentSuccessful()); 
 
-
-                     // Send Email here to LU //
-
-                    if ($request->hasFile('transaction_how_to_doc')) 
-                    {
-                    //     $file = $request->file('transaction_how_to_doc');
-                            
-                    //     $docFileName = time().uniqid().'.'.$request->transaction_how_to_doc->extension();
-    
-                    //     $file->storeAs('uploads/transaction_how_to_docs', $docFileName, 's3');
-    
-                    //     $datadoc = [
-                    //         'transaction_how_to_doc' =>  $docFileName . '.png',
-                    //     ];
-
-
-                    //    $updated = Transaction::where('transaction_id', $transaction_id)->update($datadoc);
-
-                    }
-
-                    $wfr = new WalletFundingRequest();
-                    $wfr->user_id = auth()->user()->user_id;
-                    $wfr->transaction_id = $transaction_id;
-                    $wfr->account_number = $request->account_number;
-                    $inserted2 = $wfr->save();
-                     
-                    return response()->json(['inserted' => true, 'transaction_id' => $transaction_id]);
                 }
-                
+
+                $wfr = new WalletFundingRequest();
+                $wfr->user_id = auth()->user()->user_id;
+                $wfr->transaction_id = $transaction_id;
+                $wfr->account_number = $request->account_number;
+                $inserted2 = $wfr->save();
+                return response()->json(['inserted' => true, 'transaction_id' => $transaction_id]);
+            }    
         }
         else
         {
@@ -390,7 +287,6 @@ class TransactionController extends Controller
 
             return response()->json(['pending_offer_exists' => true]);
         }
-
         
     }
 
@@ -398,7 +294,6 @@ class TransactionController extends Controller
     {
         //Check a record here that the LU who connected has actually transfered funds to his virtual account. if confirmed, create transaction
         //For let just create the transaction in the database 
-
 
            $data = [
                 'lu_id' => auth()->user()->user_id,
@@ -414,11 +309,18 @@ class TransactionController extends Controller
 
             if($updated > 0)
             {
+
+                $user = User::where('user_id', auth()->user()->user_id)->first();
+
+                $wfr = new WalletFundingRequest();
+                $wfr->user_id = auth()->user()->user_id;
+                $wfr->transaction_id = $request->transaction_id;
+                $wfr->account_number = $user->reserved_account_number;
+                $inserted2 = $wfr->save();
+
                // Notification::send(new PaymentConfirmed()); 
 
                 //Create a fresh Transaction for the Foreign User
-                $senderEmail = User::where('user_id', auth()->user()->user_id)->first();
-                
 
                 $transaction = Transaction::where('transaction_id', $request->transaction_id)->first();
 
@@ -434,21 +336,20 @@ class TransactionController extends Controller
                         'amount' => $amount_new
                             
                     ]);
+
                     $datax = [
                         'max_amount' => $amount_new,
                     ];
-                    $FUsenderEmail = User::where('user_id', '=', $transaction->fu_id)->first(); 
+
                     $updated = User::where('user_id', $transaction->fu_id)->update($datax);
-                   
-       
+                    $user2 = User::where('user_id', $transaction->fu_id);
                 }
+                
+                $user->notify(new PaymentSuccessful()); 
+                //$user2->notify(new PaymentSuccessfulFU()); 
+  
 
-                
-                $senderEmail->notify(new PaymentSuccessful()); 
-               // $FUsenderEmail->notify(new PaymentSuccessfulFU());
-                
-                
-
+                //Notification::send(new PaymentConfirmed());
                
                 return response()->json(['transaction_succeed' => true, 'transaction_id' => $request->transaction_id]);
             }
@@ -457,6 +358,71 @@ class TransactionController extends Controller
                 return response()->json(['transaction_succeed' => false]);
             }
 
+    }
+
+    public function addforeignuserrate(Request $request)
+    {
+       
+        //We check if user has a pending offer first
+        $offer_exists = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
+
+        if($offer_exists == null)
+        {
+            $check_virtual_account_record = true;
+
+            if($check_virtual_account_record)
+            {
+                $transaction_id = 'TX'.time();
+                $transaction = new Transaction();
+                $transaction->transaction_id = $transaction_id;
+                $transaction->fu_id = auth()->user()->user_id;
+                $transaction->rate = $request->rate;
+                $transaction->amount = $request->max_amount;
+                $transaction->payment_type = $request->payment_type;
+                $inserted = $transaction->save();
+
+                $data3 = [
+                    'rate' => $request->rate,
+                    'min_amount' => $request->min_amount,
+                    'max_amount' => $request->max_amount,
+                ];
+    
+                $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
+
+                return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
+            }
+            else
+            {
+                return response()->json(['check_virtual_account_record' => false]);
+            }
+
+            return response()->json(['check_virtual_account_record' => true]);
+        }
+        else
+        {
+           
+
+            $data2 = [
+                'rate' => $request->rate,
+                'amount' => $request->max_amount,
+            ];
+
+            $updated2 = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->update($data2);
+
+
+            $data3 = [
+                'rate' => $request->rate,
+                'min_amount' => $request->min_amount,
+                'max_amount' => $request->max_amount,
+            ];
+
+            $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
+
+
+            return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
+
+        }
+                
     }
 
     public function generatedynamicaccountnumber(Request $request)

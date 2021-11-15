@@ -34,8 +34,16 @@ Route::get('/test', function () {
     return view('layouts.test');
 });
 
+Route::get('/careers', function () {
+    return view('careers');
+});
+
 Route::get('/about', function () {
     return view('about');
+});
+
+Route::get('/contact', function () {
+    return view('contact');
 });
 
 Route::get('/register', function () {
@@ -132,7 +140,7 @@ Route::post('verify/phone/local', [KYCController::class, 'verifyphonelocal'])->m
 Route::post('verify/phone/foreign', [KYCController::class, 'verifyphoneforeign'])->middleware(['auth', 'verified'])->name('verifyphoneforeign');
 Route::get('/dashboard/phone/verified', [DashboardController::class, 'phoneverified'])->middleware(['auth', 'verified'])->name('phoneverified');
 Route::post('/updateprofile', [UserController::class, 'updateprofile'])->middleware(['auth', 'verified'])->name('updateprofile');
-Route::get('/loadprofle', [UserController::class, 'loadprofle'])->middleware(['auth', 'verified'])->name('loadprofle');
+Route::get('/loadprofile', [UserController::class, 'loadprofile'])->middleware(['auth', 'verified'])->name('loadprofile');
 Route::post('/changepassword', [DashboardController::class, 'changepassword'])->middleware(['auth', 'verified'])->name('changepassword');
 Route::post('/showpersonaldata', [DashboardController::class, 'showpersonaldata'])->middleware(['auth', 'verified'])->name('showpersonaldata');
 Route::get('/loadshowpersonalinfo', [UserController::class, 'loadshowpersonalinfo'])->middleware(['auth', 'verified'])->name('loadshowpersonalinfo');

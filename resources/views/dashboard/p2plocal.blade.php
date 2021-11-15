@@ -94,7 +94,7 @@
                                                 </td>
                                                 <td>₦ {{number_format($offer->rate)}}</td>
                                                 {{-- <td>${{ UserController::GetUserMax($offer->fu_id)}} - ${{UserController::GetUserMin($offer->fu_id) }}</td> --}}
-                                                <td>${{ number_format(UserController::GetUserMin($offer->fu_id))}} - ${{number_format(UserController::GetUserMax($offer->fu_id)) }}</td>
+                                                <td>${{ number_format(round($offer->min_amount))}} - ${{ number_format(round($offer->max_amount)) }}</td>
                                                 <td>
                                                     @php
 
@@ -268,7 +268,7 @@
                         <div class="input-group-prepend">
                         <span class="input-group-text bg-white border border-right-0" style="padding: .6rem .1rem; padding-left: .7rem">$</span>
                         </div>
-                        <input type="number" min="1" name="amount" class="form-control  border border-left-0"  @if(!is_null($lu_rate)) value="{{$lu_rate->amount}}" @endif min="1"  style="padding: .6rem .05rem;" required>
+                        <input type="number" min="1" name="max_amount" class="form-control  border border-left-0"  @if(!is_null($lu_rate)) value="{{$lu_rate->max_amount}}" @endif min="1"  style="padding: .6rem .05rem;" required>
                     </div>
                 </div>
                
@@ -551,13 +551,15 @@
                     <div class="form-group">
                      <label for=""><strong> Attach document </strong> <small class="text-muted">(e.g: a screenshot of how to pay for you)</small></label>
                      <div class="custom-file">
-                        <input type="hidden" id="image" name="image" class="image-tag" >
-                        <input type="file" class="custom-file-input" id="browse3" accept="image/*">
+                        <input type="hidden" id="image" name="image[]" class="image-tag" >
+                        <input type="file" class="custom-file-input" multiple="true" id="browse3" accept="image/*">
+                        <input type="file" class="custom-file-input" multiple="true" id="browse3" accept="image/*">
+          
                         <label class="custom-file-label" for="customFile"></label>
                      </div>    
                 
         
-                            {{-- //<input type="file" name="browsePhoto" id="" accept="image/*" style="display:none;">   --}}
+                            {{-- //<input type="file" name="browsePhoto"  id="" accept="image/*" style="display:none;">   --}}
                     </div>
                 </div>
             </div>
@@ -959,7 +961,7 @@
                 <div class="col text-right">
                    
                         <h4 class="text-right text-dark">
-                            <span id="account_number_box1">7894456332</span>
+                            <span class="account_number_box1"></span>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="copyToClipboard('.account_number_box')">
                             <path d="M5 5.10625V13.125C4.99988 13.9184 5.30154 14.6821 5.8438 15.2613C6.38606 15.8405 7.12831 16.1917 7.92 16.2437L8.125 16.25H13.6425C13.5133 16.6155 13.2739 16.932 12.9574 17.1559C12.6408 17.3797 12.2627 17.4999 11.875 17.5H7.5C6.50544 17.5 5.55161 17.1049 4.84835 16.4017C4.14509 15.6984 3.75 14.7446 3.75 13.75V6.875C3.7498 6.48709 3.86991 6.10867 4.09379 5.79189C4.31766 5.4751 4.63428 5.23555 5 5.10625ZM14.375 2.5C14.8723 2.5 15.3492 2.69754 15.7008 3.04917C16.0525 3.40081 16.25 3.87772 16.25 4.375V13.125C16.25 13.6223 16.0525 14.0992 15.7008 14.4508C15.3492 14.8025 14.8723 15 14.375 15H8.125C7.62772 15 7.15081 14.8025 6.79917 14.4508C6.44754 14.0992 6.25 13.6223 6.25 13.125V4.375C6.25 3.87772 6.44754 3.40081 6.79917 3.04917C7.15081 2.69754 7.62772 2.5 8.125 2.5H14.375ZM14.375 3.75H8.125C7.95924 3.75 7.80027 3.81585 7.68306 3.93306C7.56585 4.05027 7.5 4.20924 7.5 4.375V13.125C7.5 13.2908 7.56585 13.4497 7.68306 13.5669C7.80027 13.6842 7.95924 13.75 8.125 13.75H14.375C14.5408 13.75 14.6997 13.6842 14.8169 13.5669C14.9342 13.4497 15 13.2908 15 13.125V4.375C15 4.20924 14.9342 4.05027 14.8169 3.93306C14.6997 3.81585 14.5408 3.75 14.375 3.75Z" fill="#2A8BF2"/>
                             </svg>
@@ -1625,7 +1627,7 @@
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M47.9999 0.333313C21.6749 0.333313 0.333252 21.675 0.333252 48C0.333252 74.325 21.6749 95.6666 47.9999 95.6666C74.3249 95.6666 95.6666 74.325 95.6666 48C95.6666 21.675 74.3249 0.333313 47.9999 0.333313ZM68.6612 39.94C69.0417 39.5051 69.3313 38.9985 69.5131 38.45C69.6949 37.9016 69.7652 37.3223 69.7198 36.7462C69.6744 36.1702 69.5142 35.6091 69.2487 35.0959C68.9833 34.5826 68.6178 34.1277 68.174 33.7578C67.7301 33.3879 67.2167 33.1105 66.664 32.9419C66.1113 32.7733 65.5305 32.717 64.9557 32.7762C64.381 32.8354 63.8238 33.009 63.3171 33.2867C62.8104 33.5644 62.3644 33.9407 62.0052 34.3933L43.3719 56.749L33.7302 47.103C32.913 46.3136 31.8184 45.8769 30.6822 45.8867C29.546 45.8966 28.4591 46.3523 27.6557 47.1558C26.8523 47.9592 26.3965 49.0461 26.3867 50.1822C26.3768 51.3184 26.8136 52.413 27.6029 53.2303L40.6029 66.2303C41.0287 66.6558 41.5385 66.988 42.0997 67.2056C42.661 67.4232 43.2614 67.5214 43.8627 67.4941C44.4641 67.4668 45.0531 67.3145 45.5924 67.0469C46.1316 66.7793 46.6091 66.4023 46.9946 65.94L68.6612 39.94Z" fill="#06C270"/>
                             </svg>
                         
-                        <h4 class="mt-5" style="font-style: normal; font-weight: 600; font-size: 36px; line-height: 43.57px; text-align: center; color: #231F20;">Payment will be confirmed</h4>
+                        <h4 class="mt-5" style="font-style: normal; font-weight: 600; font-size: 36px; line-height: 43.57px; text-align: center; color: #231F20;">Payment Successful</h4>
                         <p class="mt-3" style="font-style: normal; font-weight: 400; font-size: 16px; line-height: 25.57px; text-align: center; color: #979797">Kindly wait for a Helpa to carry out your transaction.</p>
 
                         <a class="btn btn-primary px-5 mt-2 text-white transactionid_link_lu_rate" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px;">Transaction details</a>

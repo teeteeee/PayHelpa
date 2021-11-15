@@ -158,7 +158,7 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text bg-white border border-right-0" style="padding: .6rem .1rem; padding-left: .7rem">₦</span>
                             </div>
-                            <input type="number" step="0.01" name="rate" class="form-control border border-left-0" min="1" value="{{$user->rate}}" style="padding: .6rem .05rem;" required>
+                            <input type="number" step="0.01" name="rate" class="form-control border border-left-0" min="1" value="{{$fu_rate->rate}}" style="padding: .6rem .05rem;" required>
                         </div>
                     </div>
                    
@@ -173,26 +173,26 @@
                                     {{-- <input type="number" step="0.01" name="min_amount" class="form-control border border-left-0" min="1" value="{{$user->min_amount}}" style="padding: .6rem .05rem;" required> --}}
                                     <select name="min_amount" class="form-control" required>
                                         <option value="">Select one</option>
-                                        <option value="0.00" <?php if($user->min_amount == 0.00){ echo "selected"; } ?>>0</option>
-                                        <option value="500.00" <?php if($user->min_amount == 500.00){ echo "selected"; } ?>>500</option>
-                                        <option value="1000.00" <?php if($user->min_amount == 1000.00){ echo "selected"; } ?>>1000</option>
-                                        <option value="1500.00" <?php if($user->min_amount == 1500.00){ echo "selected"; } ?>>1500</option>
-                                        <option value="2000.00" <?php if($user->min_amount == 2000.00){ echo "selected"; } ?>>2000</option>
-                                        <option value="2500.00" <?php if($user->min_amount == 2500.00){ echo "selected"; } ?>>2500</option>
-                                        <option value="3000.00" <?php if($user->min_amount == 3000.00){ echo "selected"; } ?>>3000</option>
-                                        <option value="3500.00" <?php if($user->min_amount == 3500.00){ echo "selected"; } ?>>3500</option>
-                                        <option value="4000.00" <?php if($user->min_amount == 4000.00){ echo "selected"; } ?>>4000</option>
-                                        <option value="4500.00" <?php if($user->min_amount == 4500.00){ echo "selected"; } ?>>4500</option>
-                                        <option value="5000.00" <?php if($user->min_amount == 5000.00){ echo "selected"; } ?>>5000</option>
-                                        <option value="5500.00" <?php if($user->min_amount == 5500.00){ echo "selected"; } ?>>5500</option>
-                                        <option value="6000.00" <?php if($user->min_amount == 6000.00){ echo "selected"; } ?>>6000</option>
-                                        <option value="6500.00" <?php if($user->min_amount == 6500.00){ echo "selected"; } ?>>6500</option>
-                                        <option value="7000.00" <?php if($user->min_amount == 7000.00){ echo "selected"; } ?>>7000</option>
-                                        <option value="7500.00" <?php if($user->min_amount == 7500.00){ echo "selected"; } ?>>7500</option>
-                                        <option value="8000.00" <?php if($user->min_amount == 8000.00){ echo "selected"; } ?>>8000</option>
-                                        <option value="8500.00" <?php if($user->min_amount == 8500.00){ echo "selected"; } ?>>8500</option>
-                                        <option value="9000.00" <?php if($user->min_amount == 9000.00){ echo "selected"; } ?>>9000</option>
-                                        <option value="9500.00" <?php if($user->min_amount == 9500.00){ echo "selected"; } ?>>9500</option>
+                                        <option value="0.00" <?php if($fu_rate->min_amount == 0.00){ echo "selected"; } ?>>0</option>
+                                        <option value="500.00" <?php if($fu_rate->min_amount == 500.00){ echo "selected"; } ?>>500</option>
+                                        <option value="1000.00" <?php if($fu_rate->min_amount == 1000.00){ echo "selected"; } ?>>1000</option>
+                                        <option value="1500.00" <?php if($fu_rate->min_amount == 1500.00){ echo "selected"; } ?>>1500</option>
+                                        <option value="2000.00" <?php if($fu_rate->min_amount == 2000.00){ echo "selected"; } ?>>2000</option>
+                                        <option value="2500.00" <?php if($fu_rate->min_amount == 2500.00){ echo "selected"; } ?>>2500</option>
+                                        <option value="3000.00" <?php if($fu_rate->min_amount == 3000.00){ echo "selected"; } ?>>3000</option>
+                                        <option value="3500.00" <?php if($fu_rate->min_amount == 3500.00){ echo "selected"; } ?>>3500</option>
+                                        <option value="4000.00" <?php if($fu_rate->min_amount == 4000.00){ echo "selected"; } ?>>4000</option>
+                                        <option value="4500.00" <?php if($fu_rate->min_amount == 4500.00){ echo "selected"; } ?>>4500</option>
+                                        <option value="5000.00" <?php if($fu_rate->min_amount == 5000.00){ echo "selected"; } ?>>5000</option>
+                                        <option value="5500.00" <?php if($fu_rate->min_amount == 5500.00){ echo "selected"; } ?>>5500</option>
+                                        <option value="6000.00" <?php if($fu_rate->min_amount == 6000.00){ echo "selected"; } ?>>6000</option>
+                                        <option value="6500.00" <?php if($fu_rate->min_amount == 6500.00){ echo "selected"; } ?>>6500</option>
+                                        <option value="7000.00" <?php if($fu_rate->min_amount == 7000.00){ echo "selected"; } ?>>7000</option>
+                                        <option value="7500.00" <?php if($fu_rate->min_amount == 7500.00){ echo "selected"; } ?>>7500</option>
+                                        <option value="8000.00" <?php if($fu_rate->min_amount == 8000.00){ echo "selected"; } ?>>8000</option>
+                                        <option value="8500.00" <?php if($fu_rate->min_amount == 8500.00){ echo "selected"; } ?>>8500</option>
+                                        <option value="9000.00" <?php if($fu_rate->min_amount == 9000.00){ echo "selected"; } ?>>9000</option>
+                                        <option value="9500.00" <?php if($fu_rate->min_amount == 9500.00){ echo "selected"; } ?>>9500</option>
 
                                     </select>
                                 </div>
@@ -206,26 +206,26 @@
                             {{-- <input type="number" step="0.01" name="max_amount" class="form-control border border-left-0" min="1" value="{{$user->max_amount}}" style="padding: .6rem .05rem;" required> --}}
                             <select name="max_amount" class="form-control" required>
                                 <option value="">Select one</option>
-                                <option value="500.00" <?php if($user->max_amount == 500.00){ echo "selected"; } ?>>500</option>
-                                <option value="1000.00" <?php if($user->max_amount == 1000.00){ echo "selected"; } ?>>1000</option>
-                                <option value="1500.00" <?php if($user->max_amount == 1500.00){ echo "selected"; } ?>>1500</option>
-                                <option value="2000.00" <?php if($user->max_amount == 2000.00){ echo "selected"; } ?>>2000</option>
-                                <option value="2500.00" <?php if($user->max_amount == 2500.00){ echo "selected"; } ?>>2500</option>
-                                <option value="3000.00" <?php if($user->max_amount == 3000.00){ echo "selected"; } ?>>3000</option>
-                                <option value="3500.00" <?php if($user->max_amount == 3500.00){ echo "selected"; } ?>>3500</option>
-                                <option value="4000.00" <?php if($user->max_amount == 4000.00){ echo "selected"; } ?>>4000</option>
-                                <option value="4500.00" <?php if($user->max_amount == 4500.00){ echo "selected"; } ?>>4500</option>
-                                <option value="5000.00" <?php if($user->max_amount == 5000.00){ echo "selected"; } ?>>5000</option>
-                                <option value="5500.00" <?php if($user->max_amount == 5500.00){ echo "selected"; } ?>>5500</option>
-                                <option value="6000.00" <?php if($user->max_amount == 6000.00){ echo "selected"; } ?>>6000</option>
-                                <option value="6500.00" <?php if($user->max_amount == 6500.00){ echo "selected"; } ?>>6500</option>
-                                <option value="7000.00" <?php if($user->max_amount == 7000.00){ echo "selected"; } ?>>7000</option>
-                                <option value="7500.00" <?php if($user->max_amount == 7500.00){ echo "selected"; } ?>>7500</option>
-                                <option value="8000.00" <?php if($user->max_amount == 8000.00){ echo "selected"; } ?>>8000</option>
-                                <option value="8500.00" <?php if($user->max_amount == 8500.00){ echo "selected"; } ?>>8500</option>
-                                <option value="9000.00" <?php if($user->max_amount == 9000.00){ echo "selected"; } ?>>9000</option>
-                                <option value="9500.00" <?php if($user->max_amount == 9500.00){ echo "selected"; } ?>>9500</option>
-                                <option value="10000.00" <?php if($user->max_amount == 10000.00){ echo "selected"; } ?>>10000</option>
+                                <option value="500.00" <?php if($fu_rate->max_amount == 500.00){ echo "selected"; } ?>>500</option>
+                                <option value="1000.00" <?php if($fu_rate->max_amount == 1000.00){ echo "selected"; } ?>>1000</option>
+                                <option value="1500.00" <?php if($fu_rate->max_amount == 1500.00){ echo "selected"; } ?>>1500</option>
+                                <option value="2000.00" <?php if($fu_rate->max_amount == 2000.00){ echo "selected"; } ?>>2000</option>
+                                <option value="2500.00" <?php if($fu_rate->max_amount == 2500.00){ echo "selected"; } ?>>2500</option>
+                                <option value="3000.00" <?php if($fu_rate->max_amount == 3000.00){ echo "selected"; } ?>>3000</option>
+                                <option value="3500.00" <?php if($fu_rate->max_amount == 3500.00){ echo "selected"; } ?>>3500</option>
+                                <option value="4000.00" <?php if($fu_rate->max_amount == 4000.00){ echo "selected"; } ?>>4000</option>
+                                <option value="4500.00" <?php if($fu_rate->max_amount == 4500.00){ echo "selected"; } ?>>4500</option>
+                                <option value="5000.00" <?php if($fu_rate->max_amount == 5000.00){ echo "selected"; } ?>>5000</option>
+                                <option value="5500.00" <?php if($fu_rate->max_amount == 5500.00){ echo "selected"; } ?>>5500</option>
+                                <option value="6000.00" <?php if($fu_rate->max_amount == 6000.00){ echo "selected"; } ?>>6000</option>
+                                <option value="6500.00" <?php if($fu_rate->max_amount == 6500.00){ echo "selected"; } ?>>6500</option>
+                                <option value="7000.00" <?php if($fu_rate->max_amount == 7000.00){ echo "selected"; } ?>>7000</option>
+                                <option value="7500.00" <?php if($fu_rate->max_amount == 7500.00){ echo "selected"; } ?>>7500</option>
+                                <option value="8000.00" <?php if($fu_rate->max_amount == 8000.00){ echo "selected"; } ?>>8000</option>
+                                <option value="8500.00" <?php if($fu_rate->max_amount == 8500.00){ echo "selected"; } ?>>8500</option>
+                                <option value="9000.00" <?php if($fu_rate->max_amount == 9000.00){ echo "selected"; } ?>>9000</option>
+                                <option value="9500.00" <?php if($fu_rate->max_amount == 9500.00){ echo "selected"; } ?>>9500</option>
+                                <option value="10000.00" <?php if($fu_rate->max_amount == 10000.00){ echo "selected"; } ?>>10000</option>
 
                             </select>
                         </div>

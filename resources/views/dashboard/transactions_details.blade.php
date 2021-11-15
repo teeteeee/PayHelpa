@@ -171,7 +171,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right">
-                                                                <strong>$ {{ number_format($transaction->amount) }}</strong>                                                                </div>
+                                                                <strong>$ {{ number_format($transaction->max_amount) }}</strong>                                                                </div>
                                                             </div>
 
                                                             <div class="row mt-4">
@@ -180,7 +180,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right">
-                                                                    <strong> ₦ {{ number_format($transaction->rate * $transaction->amount)}}</strong>
+                                                                    <strong> ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}</strong>
                                                                 </div>
                                                             </div>
 
@@ -262,10 +262,10 @@
 
                                                             <div class="row mt-1 mx-0 p-3" style="background: rgba(196, 196, 255, 0.28);">
                                                                 <div class="col">
-                                                                   <span class="text-dark"> Amount Sent: ₦ {{$transaction->amount}} </span>
+                                                                   <span class="text-dark"> Amount Sent: ₦ {{$transaction->max_amount}} </span>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <span class="text-dark"> Dollar Rate: ₦ {{$transaction->amount}} </span>
+                                                                    <span class="text-dark"> Dollar Rate: ₦ {{$transaction->max_amount}} </span>
                                                                 </div>
                                                                 
                                                             </div>
@@ -376,7 +376,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right font-weight-bold">
-                                                                    $ {{ number_format($transaction->amount) }}
+                                                                    $ {{ number_format($transaction->max_amount) }}
                                                                 </div>
                                                             </div>
 
@@ -386,7 +386,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right font-weight-bold">
-                                                                    ₦ {{ number_format($transaction->rate * $transaction->amount)}}
+                                                                    ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}
                                                                 </div>
                                                             </div>
 
@@ -538,7 +538,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right font-weight-bold">
-                                                                    $ {{ number_format($transaction->amount) }}
+                                                                    $ {{ number_format($transaction->max_amount) }}
                                                                 </div>
                                                             </div>
 
@@ -548,7 +548,7 @@
                                                                 </div>
 
                                                                 <div class="col text-right font-weight-bold">
-                                                                    ₦ {{ number_format($transaction->rate * $transaction->amount)}}
+                                                                    ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}
                                                                 </div>
                                                             </div>
 
@@ -676,7 +676,7 @@
                                                                 </div>
         
                                                                 <div class="col text-right font-weight-bold">
-                                                                    $ {{ number_format($transaction->amount) }}
+                                                                    $ {{ number_format($transaction->max_amount) }}
                                                                 </div>
                                                             </div>
         
@@ -686,7 +686,7 @@
                                                                 </div>
         
                                                                 <div class="col text-right font-weight-bold">
-                                                                    ₦ {{ number_format($transaction->rate * $transaction->amount)}}
+                                                                    ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}
                                                                 </div>
                                                             </div>
         
@@ -813,7 +813,7 @@
                                                             </div>
 
                                                             <div class="col text-right text-dark font-weight-bold">
-                                                                $ {{ number_format($transaction->amount) }}
+                                                                $ {{ number_format($transaction->max_amount) }}
                                                             </div>
                                                         </div>
 
@@ -823,7 +823,7 @@
                                                             </div>
 
                                                             <div class="col text-right text-dark font-weight-bold">
-                                                                ₦ {{ number_format($transaction->rate * $transaction->amount)}}
+                                                                ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}
                                                             </div>
                                                         </div>
 
@@ -1038,7 +1038,7 @@
                                                         </div>
 
                                                         <div class="col text-right font-weight-bold">
-                                                            $ {{ number_format($transaction->amount) }}
+                                                            $ {{ number_format($transaction->max_amount) }}
                                                         </div>
                                                     </div>
 
@@ -1048,7 +1048,7 @@
                                                         </div>
 
                                                         <div class="col text-right font-weight-bold">
-                                                            ₦ {{ number_format($transaction->rate * $transaction->amount)}}
+                                                            ₦ {{ number_format($transaction->rate * $transaction->max_amount)}}
                                                         </div>
                                                     </div>
 

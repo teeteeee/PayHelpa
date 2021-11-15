@@ -45,7 +45,6 @@
           }
 
         }
-
       
 
         /* Large devices (laptops/desktops, 992px and up) */
@@ -63,10 +62,11 @@
   
 <section style="background: #EEF1FA; width: 100%;">
 
+
 <div class="container">
   <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 ">
-        <nav class="navbar navbar-expand-md mt-5" style="background: #EEF1FA;">
+        <nav class="navbar navbar-expand-md mt-5">
           <!-- Brand -->
           <a class="navbar-brand text-white" href="#">
             <img src="{{ asset('public/assets/images/payhelpa-03.png') }}" alt="">
@@ -83,6 +83,9 @@
             <ul class="navbar-nav justify-content-md-end">
               <li class="nav-item" style="margin-left: 5rem">
                 <a class="nav-link" style="font-size: 20px; font-style: normal; font-weight: 400; line-height: 24px; color:#121212" href="/about">About Us</a>
+              </li>
+              <li class="nav-item mx-3">
+                <a class="nav-link" style="font-size: 20px; font-style: normal; font-weight: 400; line-height: 24px; color:#121212" href="/about">Product</a>
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link" style="font-size: 20px; font-style: normal; font-weight: 400; line-height: 24px; color:#121212" href="/careers">Careers</a>
@@ -127,9 +130,11 @@
         </nav>
       </div>
   </div>
+  <video autoplay="autoplay" muted loop style="width:100%; height:90%; margin-left: -6rem margin-top: -2rem" >
+  <source src="{{ asset('public/assets/images/Landing_Page_8.webm') }}" type="video/webm;">
+  </video> 
 
-
-  <div class="row" id="need-to-trade-box" style="margin-top: 15rem;">
+  <div class="row" id="need-to-trade-box" style="margin-top: -15rem;">
     <div class="col-lg-6">
         <h1 style="font-size: 48px; font-style: normal; font-weight: 700; line-height: 60.97px; color:#222C65" id="need-to-trade-box_text">Need to trade?</h1>
           <h4 style="color:#121212" id="need-to-trade-box_tagline">Get your money working by finding a Helpa</h4>
@@ -145,6 +150,7 @@
 </div>
 
 </section>
+
 
 
 <section style="margin-bottom: 5rem; margin-top: 5rem; background: #fff">

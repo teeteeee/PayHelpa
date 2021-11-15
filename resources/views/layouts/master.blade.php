@@ -50,9 +50,7 @@
 			
 			}
 
-		::-webkit-scrollbar {
-		width: 10px;
-		}
+	
 		.cursor{
 			cursor : pointer;
 		}
@@ -894,12 +892,13 @@
 	   // alert(performance_id)
 		
 		$.ajaxSetup({
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
 		});
+
 		$.ajax({
-			url:"{{url('loadprofle')}}",
+			url:"{{url('loadprofile')}}",
 			method:"GET",
 			dataType:"json",
 			success:function(data)
@@ -1746,32 +1745,49 @@ function isEveryInputEmpty()
 	
 	$("#pay_now_btn").click(function (e) { 
 		e.preventDefault();
-		$("#myModal2b").hide();
-		$("#myModal2c").hide();
-		$("#myModal2d").show();
-		
+
+
+		$.ajaxSetup({
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+               });
+
+        $.ajax({
+            url: "{{ url('generate/dynamic/account/number') }}",
+            type: "POST",
+			//data: querystring,
+            dataType: "json",
+			beforeSend:function(){
+                
+                },
+            success: function(response) {
+                //code to execute
+				
+				console.log(response);
+
+				$(".account_number_box2").text(response.account_number);
+
+				$(".account_number_box2").val(response.account_number);
+
+				$("#myModal2b").hide();
+				$("#myModal2c").hide();
+				$("#myModal2d").show();				
+
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                    //code to execute
+                    //console(xhr.responseText);
+                    //$('#request-result2').html('Error occurred! Try again').delay(4000).fadeOut();
+                },
+            });
+
+        // return false;
 
 		
 	});
 </script>
 
-
-<script> 
-
-		$("#pay_now_form").submit(function (e) { 
-
-
-			var querystring = $(this).serialize();
-
-			//alert(querystring);
-		
-
-		
-
-		
-	});
-
-</script>
 
 
 <script>
@@ -2237,9 +2253,44 @@ function isEveryInputEmpty()
 <script>
 	$('#pay_now_btn1').click(function (e) { 
 		e.preventDefault();
-		$('#myModal1b').modal('hide');
-		$('#myModal1c').modal('hide');
-		$('#myModal1d').modal('show');
+
+
+		$.ajaxSetup({
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+               });
+
+        $.ajax({
+            url: "{{ url('generate/dynamic/account/number') }}",
+            type: "POST",
+			//data: querystring,
+            dataType: "json",
+			beforeSend:function(){
+                
+                },
+            success: function(response) {
+                //code to execute
+				
+				console.log(response);
+
+				$(".account_number_box1").text(response.account_number);
+
+				$(".account_number_box1").val(response.account_number);
+
+				$('#myModal1b').modal('hide');
+				$('#myModal1c').modal('hide');
+				$('#myModal1d').modal('show');			
+
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                    //code to execute
+                    //console(xhr.responseText);
+                    //$('#request-result2').html('Error occurred! Try again').delay(4000).fadeOut();
+                },
+            });
+
+		
 	});
 </script>
 
@@ -2372,63 +2423,7 @@ function isEveryInputEmpty()
 	$("#bank_transfer_lu").click(function (e) { 
 		e.preventDefault();
 
-
-		//Get reserved account number
-
-		//Generate Dynamic Account Number Here
-
-		$.ajaxSetup({
-               headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-               });
-
-        $.ajax({
-            url: "{{ url('generate/dynamic/account/number') }}",
-            type: "POST",
-			//data: querystring,
-            dataType: "json",
-			beforeSend:function(){
-                
-                },
-            success: function(response) {
-                //code to execute
-				
-				//console.log(response);
-
-				if(response.status)
-				{
-					
-					$("#myModal2e").show();
-
-					$(".account_number_box2").text(response.account_number);
-
-					$(".account_number_box2").val(response.account_number);
-				}
-				else
-				{
-					$('#pay_now_btn').show();
-					$('#pay_now_btn_sending').hide();
-					$('#generate_dynamic_account_error').show();
-				}
-
-				
-
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                    //code to execute
-                    console(xhr.responseText);
-                    //$('#request-result2').html('Error occurred! Try again').delay(4000).fadeOut();
-                },
-            });
-
-        return false;
-
-
-		// $('#myModal2b').modal('hide');
-		// $('#myModal2c').modal('hide');
-		// $('#myModal2d').modal('hide');
-		// $('#myModal2e').modal('show');
+		$("#myModal2e").show();
 
 		// counter2();
 	});
@@ -2479,15 +2474,15 @@ function isEveryInputEmpty()
 		
     
     	// //Display the key/value pairs
-		// for (var pair of formData.entries()) {
-		// 	console.log(pair[0]+ ', ' + pair[1]); 
-		// }
+// 		for (var pair of formData.entries()) {
+// 			console.log(pair[0]+ ', ' + pair[1]); 
+// 		}
 
 		$.ajaxSetup({
-               headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-               });
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+              });
 
         $.ajax({
             url: "{{ url('/bank/transfer/lu/rate') }}",
@@ -2881,7 +2876,7 @@ function isEveryInputEmpty()
 <script>
 	$('.has-your-completed-back').click(function (e) { 
 		e.preventDefault();
-		$('#myModal').hide());
+		$('#myModal').hide();
 		//alert("hi")
 
 	});

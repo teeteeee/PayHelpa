@@ -28,7 +28,7 @@ class DashboardController extends Controller
     {
        $user = User::where('user_id', auth()->user()->user_id)->first();
         return view('dashboard.index', compact('user'));
-        //return view('layouts.master', compact('user'));
+       // return view('layouts.mastertesting', compact('user'));
     }
 
     public function test()
@@ -38,61 +38,13 @@ class DashboardController extends Controller
         return view('layouts.test', compact('user'));
     }
 
-
-    // public function p2p()
-    // {
-    //     $user = User::where('user_id', auth()->user()->user_id)->first();
-    //     $transaction_offers_fu = Transaction::where('is_taken', 0)->where('lu_id', null)->get();
-    //     $transaction_offers_lu = Transaction::where('is_taken', 0)->where('fu_id', null)->where('is_payment_confirmed', 1)->get();
-
-    //     $lu_rate = Transaction::where('is_taken', 0)->where('lu_id', auth()->user()->user_id)->first();
-    //     //var_dump($lu_rate);
-
-    //     $fu_rate = Transaction::where('is_taken', 0)->where('fu_id', auth()->user()->user_id)->first();
-
-    //     $date = new DateTime;
-    //     $date->modify('-10 minutes');
-    //     $formatted_date = $date->format('Y-m-d H:i:s');
-
-    //     $p2p_state = P2PState::where('user_id', auth()->user()->user_id)->where('created_at', '>=',$formatted_date)->where('is_settled', 0)->first();
-      
-
-    //     if($user->number_verified == 0)
-    //     {
-    //         return redirect('/dashboard/kyc/1')->with('error', 'Verify your number first');
-    //     }
-    //     else
-    //     {
-    //         if($user->is_foreign_user == '0')
-    //         {
-    //             if(is_null($p2p_state))
-    //             {
-    //                 $show_modal = false;
-    //                 return view('dashboard.p2plocal', compact('user', 'transaction_offers_fu', 'lu_rate', 'show_modal', 'p2p_state'));
-    //             }
-    //             else
-    //             {
-                   
-    //                 $show_modal = true;
-    //                 return view('dashboard.p2plocal', compact('user', 'transaction_offers_fu', 'lu_rate', 'show_modal', 'p2p_state'));
-    //             }
-               
-    //         }
-    //         elseif($user->is_foreign_user == '1')
-    //         {
-    //             if(is_null($fu_rate))
-    //             {
-    //                 return view('dashboard.p2pforeignone', compact('user', 'transaction_offers_lu'));
-    //             }
-    //             else
-    //             {
-    //                 return view('dashboard.p2pforeignthree', compact('user', 'transaction_offers_lu', 'fu_rate'));
-    //             }
-
-    //         }
-    //     }
-        
-    // }
+    public function closed(Request $request)
+    {
+        return response()->json([ 
+            'status' => true,
+            'message' => 'Ok',
+        ]);
+    }
 
     public function p2pforeigntwo()
     {

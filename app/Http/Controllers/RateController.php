@@ -20,10 +20,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Http;
+use DateTime;
 use App\Notifications\FuRateUpdated;
 use App\Notifications\LuRateUpdated;
 use Illuminate\Support\Facades\Notification;
-use DateTime;
+
 
 class RateController extends Controller
 {
@@ -32,60 +33,38 @@ class RateController extends Controller
        
         //We check if user has a pending offer first
         $offer_exists = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->first();
-        $user =  User::where('user_id', auth()->user()->user_id)->first();
+         $user =  User::where('user_id', auth()->user()->user_id)->first();
+ 
+
         if($offer_exists == null)
         {
-            $check_virtual_account_record = true;
+            
+            $transaction_id = 'TX'.time();
+            $transaction = new Transaction();
+            $transaction->transaction_id = $transaction_id;
+            $transaction->fu_id = auth()->user()->user_id;
+            $transaction->rate = $request->rate;
+            $transaction->min_amount = $request->min_amount;
+            $transaction->max_amount = $request->max_amount;
+            $transaction->payment_type = $request->payment_type;
+            $inserted = $transaction->save();
+            
+            $user->notify(new FuRateUpdated());
+            return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
 
-            if($check_virtual_account_record)
-            {
-                $transaction_id = 'TX'.time();
-                $transaction = new Transaction();
-                $transaction->transaction_id = $transaction_id;
-                $transaction->fu_id = auth()->user()->user_id;
-                $transaction->rate = $request->rate;
-                $transaction->amount = $request->max_amount;
-                $transaction->payment_type = $request->payment_type;
-                $inserted = $transaction->save();
-
-                $data3 = [
-                    'rate' => $request->rate,
-                    'min_amount' => $request->min_amount,
-                    'max_amount' => $request->max_amount,
-                ];
-    
-                $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
-                $user->notify(new FuRateUpdated());
-
-                return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
-            }
-            else
-            {
-                return response()->json(['check_virtual_account_record' => false]);
-            }
-
-            return response()->json(['check_virtual_account_record' => true]);
         }
         else
         {
            
-
             $data2 = [
-                'rate' => $request->rate,
-                'amount' => $request->max_amount,
-            ];
-
-            $updated2 = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->update($data2);
-
-
-            $data3 = [
                 'rate' => $request->rate,
                 'min_amount' => $request->min_amount,
                 'max_amount' => $request->max_amount,
             ];
+            
 
-            $updated3 = User::where('user_id', auth()->user()->user_id)->update($data3);
-            $user->notify(new FuRateUpdated());
+            $updated2 = Transaction::where('fu_id', auth()->user()->user_id)->where('is_taken', 0)->update($data2);
+             $user->notify(new FuRateUpdated());
 
             return redirect('/dashboard/p2p/foreign/3')->with('success_body', 'Your rate has been added/updated successfully');
 
@@ -97,7 +76,7 @@ class RateController extends Controller
     {
         $data = [
             'rate' => $request->rate,
-            'amount' => $request->amount
+            'max_amount' => $request->max_amount
         ];
 
         $updated = Transaction::where('is_taken', 0)->where('lu_id', auth()->user()->user_id)->update($data);
@@ -111,6 +90,5 @@ class RateController extends Controller
             return back()->with('error', 'Error occurred! Refresh page and try again');
         }
     }
-
 
 }

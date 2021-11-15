@@ -183,10 +183,12 @@ class UserController extends Controller
         $post = User::where('id', '=' ,$id)->first();
 
                       $response = Http::withHeaders([
-                    'X-Auth-Signature' => 'BE09BEE831CF262226B426E39BD1092AF84DC63076D4174FAC78A2261F9A3D6E59744983B8326B69CDF2963FE314DFC89635CFA37A40596508DD6EAAB09402C7',
-                    'Client-Id' => 'dGVzdF9Qcm92aWR1cw=='
-                ])->post('http://154.113.16.142:8088/appdevapi/api/PiPCreateDynamicAccountNumber', [
-                    'account_name' => 'PayHelpa',
+                    'X-Auth-Signature' => '63305c904b499922cf2d88cdec26e808c8154fb9d8bb4ab222d84df0e3853e85fafe71e326313205ee849171155644cc4b7e413cee2e301018fdc93a9ee3fc80',
+                    'Client-Id' => 'cEBZSDMxTHBhX1ByMCgpLg==',
+                    //'Secret'=> 'CC1BF237E7EDD89DB08A804F5B8A16E7DBDE4432664BDD54C6AD943CD6F6F012'
+                ])->post('https://vps.providusbank.com/vps/api/PiPCreateReservedAccountNumber', [
+                    'account_name' => $post->name,
+                    'bvn' =>'',
                 ]);
                 $account_number = json_decode($response);
                 if($response->status() == 200){
@@ -253,6 +255,10 @@ class UserController extends Controller
     public function show($id){
         $users = DB::table('users')->where('id',$id)->get();
         return view('show', compact('users'));
+    }
+    public function showimage($id){
+        $users = DB::table('users')->where('id',$id)->get();
+        return view('showimage', compact('users'));
     }
 }
 

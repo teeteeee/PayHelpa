@@ -96,7 +96,7 @@
 	<script>
 		WebFont.load({
 			google: {"families":["Lato:300,400,700,900"]},
-			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['../assets/css/fonts.min.css']},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['../public/assets/css/fonts.min.css']},
 			active: function() {
 				sessionStorage.fonts = true;
 			}
@@ -167,7 +167,7 @@
 										<div class="notif-center">
 											<a href="#">
 												<div class="notif-img"> 
-													<img src="../assets/img/jm_denis.jpg" alt="Img Profile">
+													<img src="../public/assets/img/jm_denis.jpg" alt="Img Profile">
 												</div>
 												<div class="notif-content">
 													<span class="subject">Jimmy Denis</span>
@@ -179,7 +179,7 @@
 											</a>
 											<a href="#">
 												<div class="notif-img"> 
-													<img src="../assets/img/chadengle.jpg" alt="Img Profile">
+													<img src="../public/assets/img/chadengle.jpg" alt="Img Profile">
 												</div>
 												<div class="notif-content">
 													<span class="subject">Chad</span>
@@ -191,7 +191,7 @@
 											</a>
 											<a href="#">
 												<div class="notif-img"> 
-													<img src="../assets/img/mlane.jpg" alt="Img Profile">
+													<img src="../public/assets/img/mlane.jpg" alt="Img Profile">
 												</div>
 												<div class="notif-content">
 													<span class="subject">Jhon Doe</span>
@@ -203,7 +203,7 @@
 											</a>
 											<a href="#">
 												<div class="notif-img"> 
-													<img src="../assets/img/talha.jpg" alt="Img Profile">
+													<img src="../public/assets/img/talha.jpg" alt="Img Profile">
 												</div>
 												<div class="notif-content">
 													<span class="subject">Talha</span>
@@ -253,7 +253,7 @@
 											</a>
 											{{-- <a href="#">
 												<div class="notif-img"> 
-													<img src="../assets/img/profile2.jpg" alt="Img Profile">
+													<img src="../public/assets/img/profile2.jpg" alt="Img Profile">
 												</div>
 												<div class="notif-content">
 													<span class="block">
@@ -337,7 +337,7 @@
 										<div class="dropdown-user-scroll scrollbar-outer">
 											{{-- <li>
 												<div class="user-box">
-													<div class="avatar-lg"><img src="../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+													<div class="avatar-lg"><img src="../public/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
 													<div class="u-text">
 														<h4>Hizrian</h4>
 														<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
@@ -362,7 +362,7 @@
 								<div class="dropdown-user-scroll scrollbar-outer">
 									<li>
 										<div class="user-box">
-											<div class="avatar-lg"><img src="../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+											<div class="avatar-lg"><img src="../public/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
 											<div class="u-text">
 												<h4>Hizrian</h4>
 												<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
@@ -731,7 +731,7 @@
                                                 </div>
         
                                                 <div>
-                                                    <button id="kyc_send_btn" class="btn btn-primary px-5 mt-3" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px; margin-left:15rem">SAVE</button>
+                                                    <button id="kyc_send_btn" class="btn btn-primary px-5 mt-3" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px; margin-left:15rem">UPLOAD</button>
                                                     <button id="kyc_send_btn2" class="btn btn-primary px-5 mt-3 disabled" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px; margin-left:15rem; display:none">PLEASE WAIT <i class="fa fa-spinner fa-spin"></i></button>
                                                 </div>
                                                
@@ -753,7 +753,7 @@
                                                     
 
                                                 <div class="text-center">
-                                                    <button id="kyc_send_btn_foreign" class="btn btn-primary px-5 mt-3 text-center" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px;">SAVE</button>
+                                                    <button id="kyc_send_btn_foreign" class="btn btn-primary px-5 mt-3 text-center" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px;">UPLOAD</button>
                                                     <button id="kyc_send_btn_foreign2" class="btn btn-primary px-5 mt-3 disabled" style="background: #2A8BF2; border: 1px solid #2A8BF2; box-sizing: border-box;border-radius: 30px; display:none">PLEASE WAIT <i class="fa fa-spinner fa-spin"></i></button>
                                                 </div>
                                         
